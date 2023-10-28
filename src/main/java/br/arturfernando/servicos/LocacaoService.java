@@ -11,13 +11,23 @@ import org.junit.Test;
 import br.arturfernando.entidades.Filme;
 import br.arturfernando.entidades.Locacao;
 import br.arturfernando.entidades.Usuario;
+import br.arturfernando.exceptions.FilmeSemEstoqueException;
+import br.arturfernando.exceptions.LocadoraException;
 import br.arturfernando.utils.DataUtils;
 
 public class LocacaoService {
 
-	public Locacao alugarFilme(Usuario usuario, Filme filme) throws Exception {
+	public Locacao alugarFilme(Usuario usuario, Filme filme) throws LocadoraException, FilmeSemEstoqueException {
+		if(usuario == null) {
+			throw new LocadoraException("Usuario vazio");
+		}
+
+		if(filme == null) {
+			throw new LocadoraException("Filme vazio");
+		}
+
 		if(filme.getEstoque() == 0) {
-			throw new Exception("Filme sem estoque");
+			throw new FilmeSemEstoqueException();
 		}
 
 		Locacao locacao = new Locacao();
